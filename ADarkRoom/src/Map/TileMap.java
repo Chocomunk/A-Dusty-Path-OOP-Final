@@ -1,5 +1,8 @@
 package Map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Graphics;
 
 import GUI.GUIHelper;
@@ -7,6 +10,7 @@ import GUI.GUIHelper;
 public class TileMap {
 
 	private Tile[][] grid;
+	private List<Tile> tickable = new ArrayList<Tile>();
 	
 	public TileMap(){
 		grid = new Tile[GUIHelper.WIDTH/64][GUIHelper.HEIGHT/64];
@@ -20,8 +24,11 @@ public class TileMap {
 				}else{
 					typeNum = TileType.Dirt.ordinal();
 				}
-				
-				grid[i][j] = new Tile(i,j,TileType.values()[typeNum]);
+				Tile thisTile = new Tile(i,j,TileType.values()[typeNum]);
+				grid[i][j] = thisTile;
+				if(thisTile.isEnterable()){
+					tickable.add(thisTile);
+				}
 			}
 		}
 	}
@@ -35,6 +42,16 @@ public class TileMap {
 			for(int j=0; j<grid[i].length; j++){
 				grid[i][j].Draw(g);
 			}
+		}
+	}
+	
+	public Tile getTile(int x, int y){
+		return grid[x][y];
+	}
+	
+	public void tick(int delta){
+		for(Tile t: tickable){
+			t.tick(delta);
 		}
 	}
 	

@@ -33,9 +33,13 @@ public class Tile {
 	public float getWidth() {return width;}
 	public float getHeight() {return height;}
 	public Image getTexture() {return texture;}
-	public boolean getEnterable(){return type.enterable;}
+	public boolean isEnterable(){return type.enterable;}
 	
 	public void Draw(Graphics g){
 		GUIHelper.DrawTile(this.getTexture(), this.getX(), this.getY(), g);
+	}
+	
+	public void tick(int delta){
+		
 	}
 }

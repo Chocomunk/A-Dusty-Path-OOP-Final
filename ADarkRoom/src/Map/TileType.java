@@ -3,7 +3,7 @@ package Map;
 public enum TileType {
 	
 	Grass("res/grass.png", false),
-	Dirt("res/dirt.png", false)
+	Dirt("res/dirt.png", true)
 	;
 	
 	String img = null;
