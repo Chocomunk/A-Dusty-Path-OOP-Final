@@ -12,6 +12,10 @@ public class Tile {
 	private Image texture;
 	private TileType type;
 	
+	public Tile(float x, float y, TileType type){
+		this(x,y,64,64,type);
+	}
+
 	public Tile(float x, float y, float width, float height, TileType type){
 		this.x = x;
 		this.y = y;
@@ -21,10 +25,6 @@ public class Tile {
 		try {
 			this.texture = new Image(type.img);
 		} catch (SlickException e) {e.printStackTrace();}
-	}
-	
-	public Tile(float x, float y, TileType type){
-		this(x,y,64,64,type);
 	}
 	
 	public TileType getType() {return type;}
