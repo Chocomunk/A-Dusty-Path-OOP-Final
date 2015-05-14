@@ -17,9 +17,9 @@ public class WeaponButton extends Button{
 		this.prog_Full = new Image(prog_Full);
 		total = this.prog_Empty.getWidth();
 		ratio = total;
-		realX = this.getX();
+		realX = this.getX() + (this.prog_Full.getWidth()/2 - this.getCurrTex().getWidth()/2);
 		realY = this.getY() + this.getCurrTex().getHeight();
-		cdTotal = 5000;
+		cdTotal = 1000;
 		cdCurr = 0;
 	}
 	
