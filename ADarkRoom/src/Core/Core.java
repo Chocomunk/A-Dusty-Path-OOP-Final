@@ -29,6 +29,6 @@ public class Core extends StateBasedGame{
 		this.getState(map).init(gc, this);
 		this.getState(fight).init(gc, this);
 		//CHANGE THIS TO MENU AT END
-		this.enterState(fight);
+		this.enterState(menu);
 	}
 }
