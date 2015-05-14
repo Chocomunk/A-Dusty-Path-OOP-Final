@@ -22,12 +22,13 @@ public class Core extends StateBasedGame{
 	public static void main(String[] args){
 		GUIHelper.Initialize();
 	}
-	
+
+	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		this.getState(menu).init(gc, this);
 		this.getState(map).init(gc, this);
 		this.getState(fight).init(gc, this);
 		//CHANGE THIS TO MENU AT END
-		this.enterState(menu);
+		this.enterState(fight);
 	}
 }

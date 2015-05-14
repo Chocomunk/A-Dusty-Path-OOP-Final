@@ -2,7 +2,7 @@ package States;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
-import GUI.Button;
+import GUI.*;
 
 public class Menu extends BasicGameState{
 	
@@ -10,28 +10,35 @@ public class Menu extends BasicGameState{
 	}
 
 	public Button play;
-	public String mouse = "";
+	public Button quit;
 	
+	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)throws SlickException {
-		play = new Button("res/grass.png",100,100);
+		play = new Button("res/grass.png","res/dirt.png",100,100);
+		quit = new Button("res/dirt.png","res/grass.png",200,200);
 	}
 
+	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)throws SlickException {
 		play.Draw(g);
-		g.drawString(mouse, 50, 50);
+		quit.Draw(g);
 	}
 
+	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)throws SlickException {
-		if(play.isMouseClicked()){
-			sbg.enterState(1);
-		}else if(play.isMouseOver()){
-			play.setTexture("res/dirt.png");
-		}else{
-			play.setTexture("res/grass.png");
-		}
-		
+		GUIHelper.buttonState(play, 1, sbg);
+		checkQuit(gc);
 	}
 
+	void checkQuit(GameContainer gc){
+		if(quit.isMouseClicked()){
+			gc.exit();
+		}else{
+			GUIHelper.buttonHoverHandler(quit);
+		}
+	}
+	
+	@Override
 	public int getID() {
 		return 0;
 	}
