@@ -12,7 +12,7 @@ import States.*;
 public class Core extends StateBasedGame{
 	
 	private static final int menu = 0, map = 1, fight = 2;
-	private HashMap<Integer, TileMap> maps = new HashMap<>();
+	private HashMap<Integer, TileMap> maps = new HashMap<Integer, TileMap>();
 	
 	public Core(String gameName) {
 		super(gameName);
