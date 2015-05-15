@@ -2,11 +2,15 @@ package States;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
+
+import Core.Core;
 import GUI.*;
 
 public class Menu extends BasicGameState{
 	
-	public Menu(int state){
+	private int stateID;
+	public Menu(int state, Core core){
+		stateID = state;
 	}
 
 	public Button play;
@@ -40,7 +44,7 @@ public class Menu extends BasicGameState{
 	
 	@Override
 	public int getID() {
-		return 0;
+		return stateID;
 	}
 
 }

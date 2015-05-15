@@ -7,7 +7,9 @@ import Map.TileMap;
 
 public class Ruins extends BasicGameState{
 	
+	private int stateID;
 	public Ruins(int state){
+		stateID = state;
 	}
 
 	TileMap tile;
@@ -29,7 +31,7 @@ public class Ruins extends BasicGameState{
 
 	@Override
 	public int getID() {
-		return 3;
+		return stateID;
 	}
 
 }

@@ -1,22 +1,24 @@
 package Core;
 
+import java.util.HashMap;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
-import GUI.GUIHelper;
+import GUI.*;
+import Map.*;
 import States.*;
 
 public class Core extends StateBasedGame{
 	
-	private static final int menu = 0;
-	private static final int map = 1;
-	private static final int fight = 2;
+	private static final int menu = 0, map = 1, fight = 2;
+	private HashMap<Integer, TileMap> maps = new HashMap<>();
 	
 	public Core(String gameName) {
 		super(gameName);
-		this.addState(new Menu(menu));
-		this.addState(new Map(map));
-		this.addState(new Fight(fight));
+		this.addState(new Menu(menu, this));
+		this.addState(new Map(map, this));
+		this.addState(new Fight(fight, this));
 	}
 
 	public static void main(String[] args){
@@ -29,6 +31,9 @@ public class Core extends StateBasedGame{
 		this.getState(map).init(gc, this);
 		this.getState(fight).init(gc, this);
 		//CHANGE THIS TO MENU AT END
-		this.enterState(menu);
+		this.enterState(fight);
 	}
+	
+	public void setTileMap(int index, TileMap map){maps.put(index, map);}
+	public TileMap getTileMap(int index){return maps.get(index);}
 }

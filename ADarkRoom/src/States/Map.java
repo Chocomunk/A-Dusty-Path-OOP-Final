@@ -3,11 +3,16 @@ package States;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
+import Core.Core;
 import Map.TileMap;
 
 public class Map extends BasicGameState{
 	
-	public Map(int state){
+	private int stateID;
+	private Core link;
+	public Map(int state, Core core){
+		this.stateID = state;
+		this.link = core;
 	}
 
 	TileMap tile;
@@ -15,6 +20,7 @@ public class Map extends BasicGameState{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)throws SlickException {
 		tile = new TileMap();
+		link.setTileMap(this.stateID, tile);
 	}
 
 	@Override
@@ -29,7 +35,7 @@ public class Map extends BasicGameState{
 
 	@Override
 	public int getID() {
-		return 1;
+		return stateID;
 	}
 
 }
