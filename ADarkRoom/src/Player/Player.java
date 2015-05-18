@@ -1,5 +1,7 @@
 package Player;
 
+import org.newdawn.slick.KeyListener;
+
 import Enemy.Enemy;
 import Entity.Entity;
 import Resources.Resources;
@@ -89,6 +91,26 @@ public class Player extends Entity{
 	public void resetStats(){
 		this.setCurrentFood(this.getTotalFood());
 		this.setCurrentWater(this.getTotalWater());
+	}
+	public void tick(int delta){
+		
+	}
+
+	public void keyPressed(KeyEvent event) {
+	    switch (event.getKeyCode()) {
+	        case KeyEvent.VK_UP:
+	            // up arrow
+	            break;
+	        case KeyEvent.VK_DOWN:
+	            // down arrow
+	            break;
+	        case KeyEvent.VK_RIGHT:
+	            // right arrow
+	            break;
+	        case KeyEvent.VK_LEFT:
+	            // left arrow
+	            break;
+	    }
 	}
 	
 	public int getCurrentWater() {return currentWater;}
