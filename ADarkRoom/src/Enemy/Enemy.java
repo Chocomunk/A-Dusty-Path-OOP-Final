@@ -1,20 +1,20 @@
 package Enemy;
 
+import Entity.Entity;
 import Player.*;
 import Resources.Resources;
 
-public class Enemy {
+public class Enemy extends Entity{
 	
-	private double currentHealth, totalHealth, cooldown, damage;
+	private double cooldown, damage;
 	private EnemyType type;
 	private int x,y;
 	
 	public Enemy(EnemyType type, int x, int y){
+		super(type.getTotalHealth());
 		this.x = x; this.y = y;
 		this.cooldown = type.getCooldown();
 		this.damage = type.getDamage();
-		this.totalHealth = type.getTotalHealth();
-		this.currentHealth = this.totalHealth;
 	}
 	
 	/*Alvin:
@@ -36,8 +36,6 @@ public class Enemy {
 		target.setCurrentHealth(currentHealth);
 	}
 	
-	public double getCurrentHealth() {return currentHealth;}
-	public double getTotalHealth() {return totalHealth;}
 	public double getCooldown() {return cooldown;}
 	public double getDamage() {return damage;}
 	public EnemyType getType() {return type;}
@@ -47,8 +45,6 @@ public class Enemy {
 
 	public void setX(int x) {this.x = x;}
 	public void setY(int y) {this.y = y;}
-	public void setCurrentHealth(double currentHealth) {this.currentHealth = currentHealth;}
-	public void setTotalHealth(double totalHealth) {this.totalHealth = totalHealth;}
 	public void setCooldown(double cooldown) {this.cooldown = cooldown;}
 	public void setDamage(double damage) {this.damage = damage;}
 }

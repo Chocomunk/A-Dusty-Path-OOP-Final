@@ -1,10 +1,11 @@
 package Player;
 
 import Enemy.Enemy;
+import Entity.Entity;
 import Resources.Resources;
 import Weapons.Weapon;
 
-public class Player {
+public class Player extends Entity{
 	/* Alvin (maybe pass this off to Eric too):
 	 * The resources, or maybe everything here (though most likely just resources)
 	 * could have a type of the resource object instead, that object could function
@@ -13,14 +14,16 @@ public class Player {
 	 * the object itself (although it could easily also hold information or methods
 	 * relating to the functionality of that object)
 	 */
-	private double currentHealth = 10;
-	private double totalHealth = 10;
 	private int currentWater = 0;
 	private int totalWater = 0;
 	private int currentFood = 0;
 	private int totalFood = 0;
 	
-	//NOTE: see which methods will need to print to screen. (e.g +5 water for pickup() method)
+
+	public Player(double Health, double water, double food) {
+		super(Health);
+		
+	}
 	
 	//INCOMPLETE
 	//will add water and food to currentWater and currentFood
@@ -81,15 +84,11 @@ public class Player {
 		}
 	}
 	
-	public double getCurrentHealth() {return currentHealth;}
-	public double getTotalHealth() {return totalHealth;}
 	public int getCurrentWater() {return currentWater;}
 	public int getTotalWater() {return totalWater;}
 	public int getCurrentFood() {return currentFood;}
 	public int getTotalFood() {return totalFood;}
 	
-	public void setCurrentHealth(double d) {this.currentHealth = d;}
-	public void setTotalHealth(int totalHealth) {this.totalHealth = totalHealth;}
 	public void setCurrentWater(int currentWater) {this.currentWater = currentWater;}
 	public void setTotalWater(int totalWater) {this.totalWater = totalWater;}
 	public void setCurrentFood(int currentFood) {this.currentFood = currentFood;}
