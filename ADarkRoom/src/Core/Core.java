@@ -37,3 +37,4 @@ public class Core extends StateBasedGame{
 	public void setTileMap(int index, TileMap map){maps.put(index, map);}
 	public TileMap getTileMap(int index){return maps.get(index);}
 }
+
