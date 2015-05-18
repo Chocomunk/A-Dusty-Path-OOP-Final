@@ -15,6 +15,17 @@ public class Tile {
 	public Tile(float x, float y, TileType type){
 		this(x,y,64,64,type);
 	}
+	
+	public Tile(float x, float y, String img){
+		this.x = x;
+		this.y = y;
+		this.width = 64;
+		this.height = 64;
+		this.type = null;
+		try {
+			this.texture = new Image(img);
+		} catch (SlickException e) {e.printStackTrace();}
+	}
 
 	public Tile(float x, float y, float width, float height, TileType type){
 		this.x = x;

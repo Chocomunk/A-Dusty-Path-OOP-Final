@@ -20,9 +20,11 @@ public class Player extends Entity{
 	private int totalFood = 0;
 	
 
-	public Player(double Health, double water, double food) {
-		super(Health);
-		
+	public Player(double Health, int water, int food, float x, float y, String texture) {
+		super(Health,x,y,texture);
+		this.totalWater = water;
+		this.totalFood = food;
+		resetStats();
 	}
 	
 	//INCOMPLETE
@@ -37,19 +39,19 @@ public class Player extends Entity{
 	}
 	
 	public void takeDamage(double amount){
-		if(currentHealth - amount <= 0){
+		if(this.getCurrentHealth() - amount <= 0){
 			this.setCurrentHealth(0);
 			this.die();
 		}else{
-			currentHealth -= amount;
+			this.setCurrentHealth(this.getCurrentHealth() - amount);;
 		}
 	}
 	
 	public void heal(double amount){
-		if(currentHealth + amount > totalHealth){
-			this.setCurrentHealth(this.totalHealth);
+		if(this.getCurrentHealth() + amount > this.getTotalHealth()){
+			this.setCurrentHealth(this.getTotalHealth());
 		}else{
-			currentHealth += amount;
+			this.setCurrentHealth(this.getCurrentHealth()+amount);;
 		}
 	}
 	
@@ -82,6 +84,11 @@ public class Player extends Entity{
 			this.setCurrentFood(0);
 			//ALVIN print out of food to screen
 		}
+	}
+	
+	public void resetStats(){
+		this.setCurrentFood(this.getTotalFood());
+		this.setCurrentWater(this.getTotalWater());
 	}
 	
 	public int getCurrentWater() {return currentWater;}

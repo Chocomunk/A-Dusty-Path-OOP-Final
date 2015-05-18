@@ -7,12 +7,10 @@ import Resources.Resources;
 public class Enemy extends Entity{
 	
 	private double cooldown, damage;
-	private EnemyType type;
-	private int x,y;
+	private EnemyType EType;
 	
 	public Enemy(EnemyType type, int x, int y){
-		super(type.getTotalHealth());
-		this.x = x; this.y = y;
+		super(type.getTotalHealth(), x, y, "USE TYPE IMAGE HERE");
 		this.cooldown = type.getCooldown();
 		this.damage = type.getDamage();
 	}
@@ -27,7 +25,7 @@ public class Enemy extends Entity{
 	 */
 	
 	public void takeDamage(double amount){
-		this.currentHealth -= amount;
+		this.setCurrentHealth(this.getCurrentHealth() - amount);;
 	}
 	
 	public void dealDamage(Player target){
@@ -38,13 +36,9 @@ public class Enemy extends Entity{
 	
 	public double getCooldown() {return cooldown;}
 	public double getDamage() {return damage;}
-	public EnemyType getType() {return type;}
-	public int getX() {return x;}
-	public int getY() {return y;}
-	public Resources[] drop(){return this.type.getDrops();}
+	public EnemyType getEType() {return this.EType;}
+	public Resources[] drop(){return this.EType.getDrops();}
 
-	public void setX(int x) {this.x = x;}
-	public void setY(int y) {this.y = y;}
 	public void setCooldown(double cooldown) {this.cooldown = cooldown;}
 	public void setDamage(double damage) {this.damage = damage;}
 }

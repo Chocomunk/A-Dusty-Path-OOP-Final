@@ -6,7 +6,8 @@ public class Entity extends Tile{
 	private double currentHealth = 10;
 	private double totalHealth = 10;
 	
-	public Entity(double Health){
+	public Entity(double Health, float x, float y, String texture){
+		super(x,y,texture);
 		this.totalHealth = Health;
 		this.currentHealth = this.totalHealth;
 	}
