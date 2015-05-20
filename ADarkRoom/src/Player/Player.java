@@ -1,7 +1,6 @@
 package Player;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 
 import Enemy.Enemy;
 import Entity.Entity;
@@ -93,25 +92,24 @@ public class Player extends Entity{
 		this.setCurrentFood(this.getTotalFood());
 		this.setCurrentWater(this.getTotalWater());
 	}
-	
-	@Override
-	public void tick(int delta, GameContainer gc){
-		handleInput(gc.getInput());
+	public void tick(int delta){
+		
 	}
 
-	public void handleInput(Input input) {
-	    if(input.isKeyPressed(Input.KEY_UP)){
-	    	//Move up
-	    	this.changeY(1);
-	    }else if(input.isKeyPressed(Input.KEY_DOWN)){
-	    	//Move down
-	    	this.changeY(-1);
-	    }else if(input.isKeyPressed(Input.KEY_RIGHT)){
-	    	//Move right
-	    	this.changeX(1);
-	    }else if(input.isKeyPressed(Input.KEY_LEFT)){
-	    	//Move left
-	    	this.changeX(-1);
+	public void keyPressed(KeyEvent event) {
+	    switch (event.getKeyCode()) {
+	        case KeyEvent.VK_UP:
+	            // up arrow
+	            break;
+	        case KeyEvent.VK_DOWN:
+	            // down arrow
+	            break;
+	        case KeyEvent.VK_RIGHT:
+	            // right arrow
+	            break;
+	        case KeyEvent.VK_LEFT:
+	            // left arrow
+	            break;
 	    }
 	}
 	

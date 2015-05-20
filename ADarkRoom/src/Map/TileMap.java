@@ -3,7 +3,6 @@ package Map;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import GUI.GUIHelper;
@@ -50,9 +49,9 @@ public class TileMap {
 		return grid[x][y];
 	}
 	
-	public void tick(int delta, GameContainer gc){
+	public void tick(int delta){
 		for(Tile t: tickable){
-			t.tick(delta, gc);
+			t.tick(delta);
 		}
 	}
 	

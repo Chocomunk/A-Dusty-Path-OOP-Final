@@ -1,6 +1,5 @@
 package Map;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -47,16 +46,11 @@ public class Tile {
 	public Image getTexture() {return texture;}
 	public boolean isEnterable(){return type.enterable;}
 	
-	public void setX(float x) {this.x = x;}
-	public void setY(float y) {this.y = y;}
-	public void changeX(float x) {this.x += x;}
-	public void changeY(float y) {this.y += y;}
-
 	public void Draw(Graphics g){
 		GUIHelper.DrawTile(this.getTexture(), this.getX(), this.getY(), g);
 	}
 	
-	public void tick(int delta, GameContainer gc){
+	public void tick(int delta){
 		
 	}
 }
