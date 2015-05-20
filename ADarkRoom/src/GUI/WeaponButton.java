@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import Entity.Entity;
 import Weapons.Weapon;
 
 public class WeaponButton extends Button{
@@ -20,35 +21,42 @@ public class WeaponButton extends Button{
 		this.prog_Full = new Image(prog_Full);
 		this.total = this.prog_Empty.getWidth();
 		this.ratio = total;
-		this.realX = this.getX() + (this.prog_Full.getWidth()/2 - this.getCurrTex().getWidth()/2);
+		this.realX = this.getX() - (this.prog_Full.getWidth()/2 - this.getCurrTex().getWidth()/2);
 		this.realY = this.getY() + this.getCurrTex().getHeight();
 		this.cdTotal = (float)(weapon.getCooldown()*1000.0);
 		this.cdCurr = 0;
 		this.weapon = weapon;
 	}
 	
-	public void tick(int delta){
+	public void tick(int delta, Entity enemy){
 		if(this.isMouseClicked() && cdCurr == 0){
 			cdCurr = cdTotal;
-			handleWeaponEvent();
+			handleWeaponEvent(enemy);
 		}
 		if(cdCurr>0){
 			ratio = ((cdTotal-cdCurr)/cdTotal)*total;
 			cdCurr -= delta;
-			statusEffects();
+			statusEffects(enemy, delta);
 		}
 		if(ratio>total){ratio = total;}
 		if(cdCurr < 0){cdCurr = 0;}
 	}
 	
-	void statusEffects() {
+	void statusEffects(Entity enemy, int delta) {
 		if(weapon.isPoisonProced()){
 			//Deal damage to enemy (must pass in as parameter)
+			enemy.takeDamage(1*(delta/1000));
 		}
 	}
 
-	void handleWeaponEvent(){
+	void handleWeaponEvent(Entity enemy){
 		//Deal damage to enemy (must pass in as parameter)
+		enemy.takeDamage(this.weapon.dealDamage());
+	}
+	
+	public void reset(){
+		this.cdCurr = 0;
+		this.ratio = total;
 	}
 	
 	@Override
@@ -57,4 +65,8 @@ public class WeaponButton extends Button{
 		g.drawImage(prog_Empty, realX, realY);
 		g.drawImage(this.prog_Full, realX, realY, realX+ratio, realY+total, 0, 0, ratio, total);
 	}
+
+	public void setCdTotal(float cdTotal) {this.cdTotal = cdTotal*1000;}
+	public void setCdCurr(float cdCurr) {this.cdCurr = cdCurr;}
+	
 }

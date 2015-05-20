@@ -19,18 +19,19 @@ public class Map extends BasicGameState{
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)throws SlickException {
-		tile = new TileMap();
+		tile = new TileMap(0);
 		link.setTileMap(this.stateID, tile);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)throws SlickException {
 		tile.Draw(g);
+		link.Draw(g);
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)throws SlickException {
-		
+		link.tick(delta);
 	}
 
 	@Override

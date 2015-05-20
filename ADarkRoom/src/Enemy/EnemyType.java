@@ -1,29 +1,41 @@
 package Enemy;
 
-import Resources.Resources;
+import Map.TileType;
 
-public enum EnemyType {
+public enum EnemyType{
 	
-	Bandits(5,3,1), DrBoom(7,7,7), Alvin(1,1,1),Pepe(4.20,69,0),Link(45,8,14), Friedland(100,10,10);
+	Bandits(50,3,10, "res/Bandits.png"), 
+	DrBoom(70,7,7, "res/Link.png"), 
+	Alvin(25,1,1, "res/HealthBar-Empty.png"),
+	Pepe(42,69,0, "res/Player.png"),
+	Link(45,2,14, "res/Link.png"), 
+	Friedland(100,1,10, "res/HealthBar-Full.png")
+	;
 	
 	
 	private double currentHealth;
 	private double totalHealth;
 	private double cooldown;
 	private double damage;
-	private Resources[] drops;
+	private String loc;
 	
-	EnemyType(double totalHealth,double cooldown,double damage,Resources... res){
+	EnemyType(double totalHealth,double cooldown,double damage, String loc){
 		this.cooldown = cooldown;
 		this.damage = damage;
 		this.totalHealth = totalHealth;
 		this.currentHealth = totalHealth;
-		this.drops = res;
+		this.loc = loc;
+	}
+	
+	public TileType tileType(){
+		TileType type = TileType.EMPTY;
+		type.setTile(loc, true);
+		return type;
 	}
 
 	public double getCurrentHealth() {return currentHealth;}
 	public double getTotalHealth() {return totalHealth;}
 	public double getCooldown() {return cooldown;}
 	public double getDamage() {return damage;}
-	public Resources[] getDrops() {return drops;}
+	public String getLocation() {return loc;}
 }

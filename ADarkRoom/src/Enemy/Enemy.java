@@ -2,16 +2,17 @@ package Enemy;
 
 import Entity.Entity;
 import Player.*;
-import Resources.Resources;
 
 public class Enemy extends Entity{
 	
-	private double cooldown, damage;
+	private double damage;
+	private double cooldown, cdTotal;
 	private EnemyType EType;
 	
 	public Enemy(EnemyType type, int x, int y){
-		super(type.getTotalHealth(), x, y, "USE TYPE IMAGE HERE");
-		this.cooldown = type.getCooldown();
+		super(x, y, type);
+		this.cdTotal = type.getCooldown() * 1000;
+		this.cooldown = this.cdTotal;
 		this.damage = type.getDamage();
 	}
 	
@@ -24,20 +25,28 @@ public class Enemy extends Entity{
 	 * then be implemented into another method to be used in pickup
 	 */
 	
-	public void takeDamage(double amount){
-		this.setCurrentHealth(this.getCurrentHealth() - amount);;
+	public void Die() {
+		super.Die();
+		this.setActivated(false);
 	}
 	
-	public void dealDamage(Player target){
-		double currentHealth = target.getCurrentHealth();
-		currentHealth = currentHealth - this.damage;
-		target.setCurrentHealth(currentHealth);
+	public void tick(int delta, Player player){
+		if(cooldown > 0){
+			cooldown -= delta;
+		}else{
+			cooldown = cdTotal;
+			attack(player);
+		}
+	}
+	
+	public void attack(Player player){
+		player.takeDamage(this.damage);
 	}
 	
 	public double getCooldown() {return cooldown;}
 	public double getDamage() {return damage;}
 	public EnemyType getEType() {return this.EType;}
-	public Resources[] drop(){return this.EType.getDrops();}
+//	public Resources[] drop(){return this.EType.getDrops();}
 
 	public void setCooldown(double cooldown) {this.cooldown = cooldown;}
 	public void setDamage(double damage) {this.damage = damage;}

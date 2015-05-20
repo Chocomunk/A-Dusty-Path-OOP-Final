@@ -1,9 +1,13 @@
 package Player;
 
-import org.newdawn.slick.KeyListener;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.state.StateBasedGame;
 
+import Core.Core;
 import Enemy.Enemy;
 import Entity.Entity;
+import Map.Tile;
+import Map.TileMap;
 import Resources.Resources;
 import Weapons.Weapon;
 
@@ -21,6 +25,7 @@ public class Player extends Entity{
 	private int currentFood = 0;
 	private int totalFood = 0;
 	
+	private Enemy fightTarget = null;
 
 	public Player(double Health, int water, int food, float x, float y, String texture) {
 		super(Health,x,y,texture);
@@ -40,15 +45,6 @@ public class Player extends Entity{
 		enemy.takeDamage(weapon.dealDamage());
 	}
 	
-	public void takeDamage(double amount){
-		if(this.getCurrentHealth() - amount <= 0){
-			this.setCurrentHealth(0);
-			this.die();
-		}else{
-			this.setCurrentHealth(this.getCurrentHealth() - amount);;
-		}
-	}
-	
 	public void heal(double amount){
 		if(this.getCurrentHealth() + amount > this.getTotalHealth()){
 			this.setCurrentHealth(this.getTotalHealth());
@@ -65,14 +61,14 @@ public class Player extends Entity{
 	 *reason. These reasons could be organized through ID numbers for
 	 *ease of use
 	 */
-	public void die(){
-		
+	public void Die(){
+		super.Die();
 	}
 	
 	public void decreaseWater(int amount){
 		if(currentWater - amount <= 0){
 			this.setCurrentWater(0);
-			this.die();
+			this.Die();
 		}else{
 			currentWater = currentWater - amount;
 		}
@@ -91,25 +87,36 @@ public class Player extends Entity{
 	public void resetStats(){
 		this.setCurrentFood(this.getTotalFood());
 		this.setCurrentWater(this.getTotalWater());
+		this.setCurrentHealth(this.getTotalHealth());
+		this.setX(0);this.setY(0);
+		this.setDead(false);
 	}
-	public void tick(int delta){
-		
+	
+	public void tick(int delta, StateBasedGame sbg, TileMap map){
+		handleKeyInput(sbg.getContainer().getInput());
+		if(this.checkEntered(map.getTile((int)this.getX(), (int)this.getY()))){
+			this.onEnter(map.getTile((int)this.getX(), (int)this.getY()), sbg);
+		}
 	}
 
-	public void keyPressed(KeyEvent event) {
-	    switch (event.getKeyCode()) {
-	        case KeyEvent.VK_UP:
-	            // up arrow
-	            break;
-	        case KeyEvent.VK_DOWN:
-	            // down arrow
-	            break;
-	        case KeyEvent.VK_RIGHT:
-	            // right arrow
-	            break;
-	        case KeyEvent.VK_LEFT:
-	            // left arrow
-	            break;
+	private void onEnter(Tile tile, StateBasedGame sbg) {
+		sbg.enterState(Core.fight);
+		this.fightTarget = (Enemy) tile;
+	}
+
+	public void handleKeyInput(Input input) {
+	    if(input.isKeyPressed(Input.KEY_UP) && this.getY() > 0){
+	    	//Move up
+	    	this.changeY(-1);
+	    }else if(input.isKeyPressed(Input.KEY_DOWN) && this.getY() < 15){
+	    	//Move down
+	    	this.changeY(1);
+	    }else if(input.isKeyPressed(Input.KEY_RIGHT) && this.getX() < 20){
+	    	//Move right
+	    	this.changeX(1);
+	    }else if(input.isKeyPressed(Input.KEY_LEFT) && this.getX() > 0){
+	    	//Move left
+	    	this.changeX(-1);
 	    }
 	}
 	
@@ -117,7 +124,8 @@ public class Player extends Entity{
 	public int getTotalWater() {return totalWater;}
 	public int getCurrentFood() {return currentFood;}
 	public int getTotalFood() {return totalFood;}
-	
+	public Enemy getFightTarget() {return fightTarget;}
+
 	public void setCurrentWater(int currentWater) {this.currentWater = currentWater;}
 	public void setTotalWater(int totalWater) {this.totalWater = totalWater;}
 	public void setCurrentFood(int currentFood) {this.currentFood = currentFood;}
