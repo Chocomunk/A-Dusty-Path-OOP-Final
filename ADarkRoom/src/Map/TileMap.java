@@ -56,9 +56,28 @@ public class TileMap {
 				int randChoose = (int) Math.floor(Math.random()*20);
 				Tile thisTile;
 				if(randChoose < 1 && ((i!=10)&(j!=7))){
-					EnemyType[] types = EnemyType.values();
-					int randIndex = (int) Math.floor(Math.random()*types.length);
-					thisTile = new Enemy(types[randIndex], i, j);
+					int randIndex = (int) Math.floor(Math.random()*100);
+					
+					if(randIndex<=25){
+						//25% Get Bandit
+						thisTile = new Enemy(EnemyType.Bandits, i, j);
+					}else if(randIndex<=35){
+						//10% Get DrBoom
+						thisTile = new Enemy(EnemyType.DrBoom, i, j);
+					}else if(randIndex<=55){
+						//20% Get Alvin
+						thisTile = new Enemy(EnemyType.Alvin, i, j);
+					}else if(randIndex<=75){
+						//20% Get Pepe
+						thisTile = new Enemy(EnemyType.Pepe, i, j);
+					}else if(randIndex<=90){
+						//15% Get Link
+						thisTile = new Enemy(EnemyType.Link, i, j);
+					}else{
+						//10% Get F.R.I.E.DLand
+						thisTile = new Enemy(EnemyType.Friedland, i, j);
+					}
+					
 				}else{
 					thisTile = new Tile(i,j,TileType.EMPTY);
 				}
@@ -88,7 +107,7 @@ public class TileMap {
 		boolean exists = false;
 		for(Tile[] i: this.grid){
 			for(Tile j: i){
-				if(j.isActivated()){
+				if(j.isActivated() && j.getType()!=TileType.EMPTY){
 					exists = true;
 				}
 			}

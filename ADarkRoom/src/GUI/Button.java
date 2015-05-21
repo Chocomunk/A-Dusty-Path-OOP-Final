@@ -14,7 +14,7 @@ public class Button {
 	private float x;
 	private float y;
 	private boolean clickable = true;
-	private boolean mouseLeft;
+	private boolean mouseDown;
 	
 	public Button(String img, String hovimg, float x, float y) throws SlickException{
 		this.texture = new Image(img);
@@ -63,12 +63,12 @@ public class Button {
 		boolean clicked = false;
 		
 		if (gc.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			mouseLeft = true;
+			mouseDown = true;
 			if(this.isMouseOver()){
 				this.setToHover();
 			}
-		}else if (mouseLeft) {
-            mouseLeft = false;
+		}else if (mouseDown) {
+            mouseDown = false;
             
             this.setToTexture();
             
