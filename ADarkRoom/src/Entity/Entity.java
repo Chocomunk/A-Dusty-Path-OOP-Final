@@ -25,17 +25,20 @@ public class Entity extends Tile{
 	}
 
 	public void Die() {
-		this.setCurrentHealth(0);
 		Dead = true;
+	}
+	
+	public void resetStats(){
+		this.setCurrentHealth(this.getTotalHealth());
 	}
 
 	public void takeDamage(double amount){
-		if(this.getCurrentHealth() - amount >= 0){
+		if(this.getCurrentHealth() - amount > 0){
 			this.setCurrentHealth(this.getCurrentHealth() - amount);
 		}else if(this.getCurrentHealth() > 0){
 			this.Die();
 		}else{
-			this.setCurrentHealth(0);
+			this.Die();
 		}
 	}
 	

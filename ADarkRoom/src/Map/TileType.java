@@ -6,6 +6,7 @@ public enum TileType {
 	
 	Grass("res/grass.png", false),
 	Dirt("res/dirt.png", true),
+	Wall("res/Wall.png", false),
 	EMPTY("", false),
 	
 	Bandits(EnemyType.Bandits), 

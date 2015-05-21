@@ -25,13 +25,19 @@ public class Player extends Entity{
 	private int currentFood = 0;
 	private int totalFood = 0;
 	
+	private final int setX = 10, setY = 7;
+	private int changeX = setX, changeY = setY;
+	
 	private Enemy fightTarget = null;
 
-	public Player(double Health, int water, int food, float x, float y, String texture) {
+	private Core link;
+	
+	public Player(double Health, int water, int food, float x, float y, String texture, Core core) {
 		super(Health,x,y,texture);
 		this.totalWater = water;
 		this.totalFood = food;
 		resetStats();
+		link = core;
 	}
 	
 	//INCOMPLETE
@@ -61,9 +67,6 @@ public class Player extends Entity{
 	 *reason. These reasons could be organized through ID numbers for
 	 *ease of use
 	 */
-	public void Die(){
-		super.Die();
-	}
 	
 	public void decreaseWater(int amount){
 		if(currentWater - amount <= 0){
@@ -85,38 +88,52 @@ public class Player extends Entity{
 	}
 	
 	public void resetStats(){
-		this.setCurrentFood(this.getTotalFood());
-		this.setCurrentWater(this.getTotalWater());
-		this.setCurrentHealth(this.getTotalHealth());
-		this.setX(0);this.setY(0);
+		super.resetStats();
+		this.setX(setX); this.setY(setY);
 		this.setDead(false);
 	}
 	
+	public void resetPos(Core core){
+		core.changePos(setX-this.getChangeX(), setY-this.getChangeY());
+		this.setChangeX(setX); this.setChangeY(setY);
+	}
+	
+	public void reset(){
+		resetStats();
+		resetPos(link);
+	}
+	
 	public void tick(int delta, StateBasedGame sbg, TileMap map){
-		handleKeyInput(sbg.getContainer().getInput());
-		if(this.checkEntered(map.getTile((int)this.getX(), (int)this.getY()))){
-			this.onEnter(map.getTile((int)this.getX(), (int)this.getY()), sbg);
+		handleKeyInput(sbg);
+		if(this.checkEntered(map.getTile(changeX, changeY))){
+			this.onEnter(map.getTile(changeX, changeY), sbg);
 		}
 	}
 
-	private void onEnter(Tile tile, StateBasedGame sbg) {
-		sbg.enterState(Core.fight);
+	private void onEnter(Tile tile, StateBasedGame sbg) {;
 		this.fightTarget = (Enemy) tile;
+		sbg.enterState(Core.fight);
 	}
 
-	public void handleKeyInput(Input input) {
-	    if(input.isKeyPressed(Input.KEY_UP) && this.getY() > 0){
+	public void handleKeyInput(StateBasedGame sbg) {
+		Input input = sbg.getContainer().getInput();
+		Core core = (Core)sbg;
+	    if(input.isKeyPressed(Input.KEY_UP) && this.changeY > 0){
 	    	//Move up
-	    	this.changeY(-1);
-	    }else if(input.isKeyPressed(Input.KEY_DOWN) && this.getY() < 15){
+	    	core.changePos(0, -1);
+	    	this.changeY -= 1;
+	    }else if(input.isKeyPressed(Input.KEY_DOWN) && this.changeY < Core.TileY-1){
 	    	//Move down
-	    	this.changeY(1);
-	    }else if(input.isKeyPressed(Input.KEY_RIGHT) && this.getX() < 20){
+	    	core.changePos(0, 1);
+	    	this.changeY += 1;
+	    }else if(input.isKeyPressed(Input.KEY_RIGHT) && this.changeX < Core.TileX-1){
 	    	//Move right
-	    	this.changeX(1);
-	    }else if(input.isKeyPressed(Input.KEY_LEFT) && this.getX() > 0){
+	    	core.changePos(1, 0);
+	    	this.changeX += 1;
+	    }else if(input.isKeyPressed(Input.KEY_LEFT) && this.changeX > 0){
 	    	//Move left
-	    	this.changeX(-1);
+	    	core.changePos(-1, 0);
+	    	this.changeX -= 1;
 	    }
 	}
 	
@@ -125,7 +142,12 @@ public class Player extends Entity{
 	public int getCurrentFood() {return currentFood;}
 	public int getTotalFood() {return totalFood;}
 	public Enemy getFightTarget() {return fightTarget;}
-
+	public int getChangeX() {return changeX;}
+	public int getChangeY() {return changeY;}
+	
+	public void setFightTarget(Enemy fightTarget) {this.fightTarget = fightTarget;}
+	public void setChangeX(int changeX) {this.changeX = changeX;}
+	public void setChangeY(int changeY) {this.changeY = changeY;}
 	public void setCurrentWater(int currentWater) {this.currentWater = currentWater;}
 	public void setTotalWater(int totalWater) {this.totalWater = totalWater;}
 	public void setCurrentFood(int currentFood) {this.currentFood = currentFood;}

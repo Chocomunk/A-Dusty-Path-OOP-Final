@@ -5,11 +5,11 @@ import Map.TileType;
 public enum EnemyType{
 	
 	Bandits(50,3,10, "res/Bandits.png"), 
-	DrBoom(70,7,7, "res/Link.png"), 
-	Alvin(25,1,1, "res/HealthBar-Empty.png"),
-	Pepe(42,69,0, "res/Player.png"),
+	DrBoom(70,7,7, "res/DrBoom.png"), 
+	Alvin(25,1,1, "res/Alvin.png"),
+	Pepe(42,10,69, "res/PepeChar.png"),
 	Link(45,2,14, "res/Link.png"), 
-	Friedland(100,1,10, "res/HealthBar-Full.png")
+	Friedland(100,10,100, "res/F.R.I.E.Dland.png")
 	;
 	
 	

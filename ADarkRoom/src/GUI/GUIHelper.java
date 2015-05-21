@@ -35,7 +35,7 @@ public class GUIHelper {
 	}
 	
 	public static void buttonState(Button but, int state, StateBasedGame sbg) throws SlickException{
-		if(but.isMouseClicked()){
+		if(but.isMouseClicked(sbg.getContainer())){
 			sbg.enterState(state);
 		}else {
 			buttonHoverHandler(but);

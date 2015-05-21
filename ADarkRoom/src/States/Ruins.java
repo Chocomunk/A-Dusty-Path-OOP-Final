@@ -17,7 +17,7 @@ public class Ruins extends BasicGameState{
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)throws SlickException {
-		tile = new TileMap(0);
+		tile = new TileMap(0, Core.TileX, Core.TileY);
 	}
 
 	@Override

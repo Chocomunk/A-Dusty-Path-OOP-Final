@@ -5,11 +5,11 @@ import org.newdawn.slick.state.*;
 
 import Core.Core;
 import Map.TileMap;
-
 public class Map extends BasicGameState{
 	
 	private int stateID;
 	private Core link;
+	
 	public Map(int state, Core core){
 		this.stateID = state;
 		this.link = core;
@@ -19,8 +19,7 @@ public class Map extends BasicGameState{
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)throws SlickException {
-		tile = new TileMap(0);
-		link.setTileMap(this.stateID, tile);
+		reset();
 	}
 
 	@Override
@@ -33,7 +32,12 @@ public class Map extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)throws SlickException {
 		link.tick(delta);
 	}
-
+	
+	public void reset(){
+		tile = new TileMap(0, Core.TileX, Core.TileY);
+		link.setTileMap(this.stateID, tile);
+	}
+	
 	@Override
 	public int getID() {
 		return stateID;

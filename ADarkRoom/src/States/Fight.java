@@ -25,6 +25,11 @@ public class Fight extends BasicGameState{
 	WeaponButton fist;
 	WeaponButton sword;
 	WeaponButton lance;
+	WeaponButton sickStick;
+	WeaponButton nessBat;
+	WeaponButton pepe;
+	
+	Image bg;
 	
 	HealButton heal;
 	
@@ -35,40 +40,53 @@ public class Fight extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)throws SlickException {
 		player = link.getPlayer();
 		
-		prog_Full = "res/grass.png";
-		prog_Empty = "res/dirt.png";
+		prog_Full = "res/TotalHealth.png";
+		prog_Empty = "res/HealthEmpty.png";
 		
-		fist = new WeaponButton(prog_Full,prog_Empty,"res/grass.png","res/dirt.png", new Weapon(WeaponType.Fists), 100,600);
-		sword = new WeaponButton(prog_Full,prog_Empty,"res/grass.png","res/dirt.png", new Weapon(WeaponType.Sword), 200,600);
-		lance = new WeaponButton(prog_Full,prog_Empty,"res/grass.png","res/dirt.png", new Weapon(WeaponType.Lance), 300,600);
+		bg = new Image("res/Battle.PNG");
 		
-		heal = new HealButton(prog_Full,prog_Empty,"res/grass.png","res/dirt.png", 400,600);
+		fist = new WeaponButton(prog_Full,prog_Empty, new Weapon(WeaponType.Fists), 337,600);
+		sword = new WeaponButton(prog_Full,prog_Empty, new Weapon(WeaponType.Sword), 438,600);
+		lance = new WeaponButton(prog_Full,prog_Empty, new Weapon(WeaponType.Lance), 539,600);
+		sickStick = new WeaponButton(prog_Full,prog_Empty, new Weapon(WeaponType.SickStick), 640,600);
+		nessBat = new WeaponButton(prog_Full,prog_Empty, new Weapon(WeaponType.NessBat), 741,600);
+		pepe = new WeaponButton(prog_Full,prog_Empty, new Weapon(WeaponType.Pepe), 842,600);
+		
+		heal = new HealButton(prog_Full,prog_Empty,"res/HealButton.png","res/HealButton.png", 576,700);
 	}
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)throws SlickException {
+		g.drawImage(bg, 0, 0);
+		
 		fist.Draw(g);
 		sword.Draw(g);
 		lance.Draw(g);
+		sickStick.Draw(g);
+		nessBat.Draw(g);
+		pepe.Draw(g);
 		heal.Draw(g);
 		
-		drawEntity(player, g, 100, 200);
-		drawEntity(player.getFightTarget(), g, 200, 200);
+		drawEntity(player, g, 350, 200);
+		drawEntity(player.getFightTarget(), g, 770, 200);
 	}
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)throws SlickException {
-		fist.tick(delta, player.getFightTarget());
-		sword.tick(delta, player.getFightTarget());
-		lance.tick(delta, player.getFightTarget());
-		heal.tick(delta, player);
+		fist.tick(delta, player.getFightTarget(), gc);
+		sword.tick(delta, player.getFightTarget(), gc);
+		lance.tick(delta, player.getFightTarget(), gc);
+		sickStick.tick(delta, player.getFightTarget(), gc);
+		nessBat.tick(delta, player.getFightTarget(), gc);
+		pepe.tick(delta, player.getFightTarget(), gc);
+		heal.tick(delta, player, gc);
 		
 		if(player.getFightTarget().isDead()){
 			reset();
 			sbg.enterState(Core.map);
 		}else if(player.isDead()){
 			reset();
-			player.resetStats();
+			player.reset();
 			sbg.enterState(Core.deathState);
 		}else{
 			player.getFightTarget().tick(delta, player);
@@ -76,7 +94,7 @@ public class Fight extends BasicGameState{
 	}
 	
 	void reset(){
-		fist.reset();sword.reset();lance.reset();
+		fist.reset();sword.reset();lance.reset();sickStick.reset();nessBat.reset();
 		heal.reset();
 	}
 	
@@ -85,15 +103,21 @@ public class Fight extends BasicGameState{
 		Image full = new Image(this.prog_Full);
 		Image empty = new Image(this.prog_Empty);
 		
-		float width = empty.getWidth();
+		double scalar = 2.5;
+		
+		float width = (float) (empty.getWidth()*scalar);
+		float height = (float) (empty.getHeight()*scalar);
+		
+		float Ewidth = (float) (entity.getTexture().getWidth()*scalar);
+		float Eheight = (float) (entity.getTexture().getHeight()*scalar);
 		
 		float ratio = (float) (((entity.getCurrentHealth())/entity.getTotalHealth())*width);
-		float realX = (float) (x - (width/2 - entity.getTexture().getWidth()/2));
-		float realY = y + entity.getTexture().getHeight();;
+		float realX = (float) (x - (width/2 - Ewidth/2));
+		float realY = y + Eheight;
 		
-		g.drawImage(entity.getTexture(), x, y);
-		g.drawImage(empty, realX, realY);
-		g.drawImage(full, realX, realY, realX+ratio, realY+width, 0, 0, ratio, width);
+		entity.getTexture().draw(x, y, (float)scalar);
+		empty.draw(realX, realY, (float)scalar);
+		full.getScaledCopy((float) scalar).draw(realX, realY, realX+ratio, realY+height, 0,0, ratio, height);
 	}
 	
 	void updateEntity(Entity entity){

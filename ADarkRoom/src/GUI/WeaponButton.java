@@ -1,5 +1,6 @@
 package GUI;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -15,8 +16,8 @@ public class WeaponButton extends Button{
 	private float cdTotal, cdCurr;
 	private Weapon weapon;
 	
-	public WeaponButton(String prog_Full, String prog_Empty,String img, String hovimg, Weapon weapon, float x, float y)throws SlickException {
-		super(img, hovimg, x, y);
+	public WeaponButton(String prog_Full, String prog_Empty, Weapon weapon, float x, float y)throws SlickException {
+		super(weapon.getImage(), weapon.getImage(), x, y);
 		this.prog_Empty = new Image(prog_Empty);
 		this.prog_Full = new Image(prog_Full);
 		this.total = this.prog_Empty.getWidth();
@@ -28,8 +29,8 @@ public class WeaponButton extends Button{
 		this.weapon = weapon;
 	}
 	
-	public void tick(int delta, Entity enemy){
-		if(this.isMouseClicked() && cdCurr == 0){
+	public void tick(int delta, Entity enemy, GameContainer gc){
+		if(this.isMouseClicked(gc) && cdCurr == 0){
 			cdCurr = cdTotal;
 			handleWeaponEvent(enemy);
 		}
@@ -45,7 +46,7 @@ public class WeaponButton extends Button{
 	void statusEffects(Entity enemy, int delta) {
 		if(weapon.isPoisonProced()){
 			//Deal damage to enemy (must pass in as parameter)
-			enemy.takeDamage(1*(delta/1000));
+			enemy.takeDamage(10*(delta/1000));
 		}
 	}
 
@@ -63,10 +64,15 @@ public class WeaponButton extends Button{
 	public void Draw(Graphics g){
 		super.Draw(g);
 		g.drawImage(prog_Empty, realX, realY);
-		g.drawImage(this.prog_Full, realX, realY, realX+ratio, realY+total, 0, 0, ratio, total);
+		g.drawImage(this.prog_Full, realX, realY, realX+ratio, realY+prog_Full.getHeight(), 0, 0, ratio, prog_Full.getHeight());
 	}
 
 	public void setCdTotal(float cdTotal) {this.cdTotal = cdTotal*1000;}
 	public void setCdCurr(float cdCurr) {this.cdCurr = cdCurr;}
+
+	public float getCdTotal() {return cdTotal;}
+	public float getCdCurr() {return cdCurr;}
+	public Image getProg_Full() {return prog_Full;}
+	public Image getProg_Empty() {return prog_Empty;}	
 	
 }

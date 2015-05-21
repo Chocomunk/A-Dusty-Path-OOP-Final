@@ -25,17 +25,21 @@ public class Enemy extends Entity{
 	 * then be implemented into another method to be used in pickup
 	 */
 	
-	public void Die() {
+	public void Die(){
 		super.Die();
 		this.setActivated(false);
 	}
 	
 	public void tick(int delta, Player player){
-		if(cooldown > 0){
-			cooldown -= delta;
+		if(this.isDead() || this.getCurrentHealth() == 0.0){
+		//	this.Die();
 		}else{
-			cooldown = cdTotal;
-			attack(player);
+			if(cooldown > 0){
+				cooldown -= delta;
+			}else{
+				cooldown = cdTotal;
+				attack(player);
+			}
 		}
 	}
 	
@@ -46,7 +50,6 @@ public class Enemy extends Entity{
 	public double getCooldown() {return cooldown;}
 	public double getDamage() {return damage;}
 	public EnemyType getEType() {return this.EType;}
-//	public Resources[] drop(){return this.EType.getDrops();}
 
 	public void setCooldown(double cooldown) {this.cooldown = cooldown;}
 	public void setDamage(double damage) {this.damage = damage;}

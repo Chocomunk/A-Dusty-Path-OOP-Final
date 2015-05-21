@@ -12,7 +12,8 @@ import States.*;
 
 public class Core extends StateBasedGame{
 	
-	public static final int menu = 0, map = 1, fight = 2, ruins = 3, deathState = 4;
+	public static final int menu = 0, map = 1, fight = 2, ruins = 3, deathState = 4, win = 5;
+	public static final int TileX = 25, TileY = 25;
 	private HashMap<Integer, TileMap> maps = new HashMap<Integer, TileMap>();
 	private TileMap enemies;
 	
@@ -25,6 +26,7 @@ public class Core extends StateBasedGame{
 		this.addState(new Fight(fight, this));
 		this.addState(new Ruins(ruins, this));
 		this.addState(new DeathState(deathState, this));
+		this.addState(new Win(win, this));
 	}
 
 	public static void main(String[] args){
@@ -36,10 +38,18 @@ public class Core extends StateBasedGame{
 		this.getState(menu).init(gc, this);
 		this.getState(map).init(gc, this);
 		this.getState(fight).init(gc, this);
+		this.getState(ruins).init(gc, this);
+		this.getState(deathState).init(gc, this);
+		this.getState(win).init(gc, this);
 		//CHANGE THIS TO MENU AT END
+		player = new Player(100, 50, 50, 0, 0, "res/Player.png", this);
+		resetGame();
+	}
+	
+	public void resetGame(){
 		this.enterState(menu);
-		player = new Player(100, 50, 50, 0, 0, "res/Player.png");
-		enemies = new TileMap(1);
+		((Map)this.getState(map)).reset();
+		enemies = new TileMap(1, TileX, TileY);
 	}
 	
 	public void Draw(Graphics g){
@@ -50,6 +60,9 @@ public class Core extends StateBasedGame{
 	public void tick(int delta){
 		enemies.tick(delta, this.getContainer());
 		player.tick(delta, this, enemies);
+		if(!enemies.allExists()){
+			this.enterState(win);
+		}
 	}
 	
 	public void setTileMap(int index, TileMap map){maps.put(index, map);}
@@ -57,6 +70,10 @@ public class Core extends StateBasedGame{
 
 	public TileMap getEnemies() {return enemies;}
 	public Player getPlayer() {return player;}
-	
+
+	public void changePos(float x, float y){
+		enemies.changePos(x, y);
+		getTileMap(map).changePos(x, y);
+	}
 }
 

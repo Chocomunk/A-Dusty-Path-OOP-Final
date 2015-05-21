@@ -8,34 +8,39 @@ import org.newdawn.slick.Graphics;
 
 import Enemy.Enemy;
 import Enemy.EnemyType;
-import GUI.GUIHelper;
 
 public class TileMap {
 
 	private Tile[][] grid;
 	private List<Tile> tickable = new ArrayList<Tile>();
 	
-	public TileMap(int type){
+	public TileMap(int type, int x, int y){
 		if(type == 0){
-			generateBackGround();
+			generateBackGround(x,y);
 		}else if(type == 1){
-			placeEnemies();
+			placeEnemies(x,y);
 		}
 	}
 	
-	public void generateBackGround(){
-		grid = new Tile[GUIHelper.WIDTH/64][GUIHelper.HEIGHT/64];
+	public void generateBackGround(int x, int y){
+		grid = new Tile[x+20][y+15];
 		for(int i=0; i<grid.length; i++){
 			for(int j=0; j<grid[i].length; j++){
-				int randChoose = (int) Math.floor(Math.random()*10);
-				int typeNum = 0;
-				
-				if(randChoose>=1){
-					typeNum = TileType.Grass.ordinal();
+				Tile thisTile = null;
+				//(i==9&&(j>=6||j<=x+1))&&(i==x+1&&(j>=6||j<=x+1))
+				if((i==9&&(j>=6&&j<=y+7))||(i==x+10&&(j>=6&&j<=y+7)) || (j==6&&(i>=9&&i<=x+10))||(j==x+7&&(i>=9&&i<=x+10))){
+					thisTile = new Tile(i-10,j-7,TileType.Wall);
 				}else{
-					typeNum = TileType.Dirt.ordinal();
+					int randChoose = (int) Math.floor(Math.random()*10);
+					int typeNum = 0;
+					
+					if(randChoose>=1){
+						typeNum = TileType.Grass.ordinal();
+					}else{
+						typeNum = TileType.Dirt.ordinal();
+					}
+					thisTile = new Tile(i-10,j-7,TileType.values()[typeNum]);
 				}
-				Tile thisTile = new Tile(i,j,TileType.values()[typeNum]);
 				grid[i][j] = thisTile;
 				if(thisTile.isEnterable()){
 					tickable.add(thisTile);
@@ -44,14 +49,13 @@ public class TileMap {
 		}
 	}
 	
-	public void placeEnemies(){
-		grid = new Tile[GUIHelper.WIDTH/64][GUIHelper.HEIGHT/64];
+	public void placeEnemies(int x, int y){
+		grid = new Tile[x][y];
 		for(int i=0; i<grid.length; i++){
 			for(int j=0; j<grid[i].length; j++){
 				int randChoose = (int) Math.floor(Math.random()*20);
 				Tile thisTile;
-				if(randChoose < 1 && ((i!=0)&(j!=0))){
-				//	thisTile = new Enemy(EnemyType.Link, i, j);
+				if(randChoose < 1 && ((i!=10)&(j!=7))){
 					EnemyType[] types = EnemyType.values();
 					int randIndex = (int) Math.floor(Math.random()*types.length);
 					thisTile = new Enemy(types[randIndex], i, j);
@@ -80,9 +84,29 @@ public class TileMap {
 		}
 	}
 	
-	public Tile getTile(int x, int y){
-		return grid[x][y];
+	public boolean allExists(){
+		boolean exists = false;
+		for(Tile[] i: this.grid){
+			for(Tile j: i){
+				if(j.isActivated()){
+					exists = true;
+				}
+			}
+		}
+		return exists;
 	}
+
+	public void changePos(float x, float y) {
+		for(Tile[] i: grid){
+			for(Tile j: i){
+				j.changeX(-x);
+				j.changeY(-y);
+			}
+		}
+	}
+	
+	public Tile getTile(int x, int y){return grid[x][y];}
+	public Tile[][] getGrid(){return grid;}
 	
 	public void tick(int delta, GameContainer gc){
 		for(Tile t: tickable){

@@ -2,8 +2,10 @@ package GUI;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Button {
@@ -12,6 +14,7 @@ public class Button {
 	private float x;
 	private float y;
 	private boolean clickable = true;
+	private boolean mouseLeft;
 	
 	public Button(String img, String hovimg, float x, float y) throws SlickException{
 		this.texture = new Image(img);
@@ -56,12 +59,27 @@ public class Button {
 		}
 	}
 	
-	public boolean isMouseClicked(){
-		if(this.isMouseOver() && Mouse.isButtonDown(0)&&this.clickable){
-			return true;
-		}else{
-			return false;
-		}
+	public boolean isMouseClicked(GameContainer gc){
+		boolean clicked = false;
+		
+		if (gc.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			mouseLeft = true;
+			if(this.isMouseOver()){
+				this.setToHover();
+			}
+		}else if (mouseLeft) {
+            mouseLeft = false;
+            
+            this.setToTexture();
+            
+    		if(this.isMouseOver()&&this.clickable){
+    			clicked = true;
+    		}else{
+    			clicked = false;
+    		}
+        }
+		
+		return clicked;
 	}
 	
 	public void Draw(Graphics g){
